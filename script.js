@@ -3,8 +3,6 @@ var equation=document.getElementById('equation')
 var equations=[];
 var answers=[];
 
-let output = "", keypress, click;
-
 let buttonsDiv = document.getElementById('buttonsDiv')
 
 buttonsDiv.addEventListener('click', calculator)
@@ -47,7 +45,7 @@ function ans(buttonText) {
         equation.value=" ";
     }
     else if (buttonText == "=" || buttonText == "Enter") {
-        equation.value+=currentInput.value +" = ";
+        equation.value=currentInput.value +" = ";
         currentInput.value = eval(currentInput.value)
         equations.push(equation.value)
         answers.push(currentInput.value)
