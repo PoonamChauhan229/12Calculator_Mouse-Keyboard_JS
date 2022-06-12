@@ -1,7 +1,10 @@
-let calculateDisplay = document.getElementById('screen');
+var currentInput=document.getElementById('input')
+var equation=document.getElementById('equation')
+var equations=[];
+var answers=[];
+
 let output = "", keypress, click;
-console.log(calculateDisplay.value)
-buttons = document.querySelectorAll('button');
+
 let buttonsDiv = document.getElementById('buttonsDiv')
 
 buttonsDiv.addEventListener('click', calculator)
@@ -10,93 +13,65 @@ buttonsDiv.addEventListener('keypress', calculator)
 
 function calculator(e) {
     if (e.type == 'keypress') {
+        e.preventDefault(); 
         console.log(e.key)
-        var buttonkeyText = e.key
-        display(buttonkeyText, e.type)
-    } else {
-        console.log(e.target.innerText)
-        var buttonclickText = e.target.innerText
-        display(buttonclickText, e.type)
+        
+        var keynum = e.key
+
+        var letters=/[a-zA-Z]/
+        if(keynum=="Enter"){
+            ans(keynum) 
+        }
+        else if(keynum.match(letters)){
+            alert("Enter Digits for Calculation")
+        }
+        else{
+            ans(keynum) 
+        }
+                     
+    } else{
+        var clicknum = e.target.innerText
+        ans(clicknum)
     }
 
 }
 
-function display(buttonText, type) {
+function ans(buttonText) {
+
     if (buttonText == 'x') {
         buttonText = "*"
-        output += buttonText
-        calculateDisplay.value = output;
-        console.log(calculateDisplay.value)
-        console.log(calculateDisplay.innerText)
+        currentInput.value += buttonText
     }
-    else if (buttonText == "C" || buttonText == "CE") {
-        output = "";
-        calculateDisplay.value = output;
-        console.log(calculateDisplay.value)
-        console.log(calculateDisplay.innerText)
+    else if (buttonText == "C" || buttonText == "CE") {        
+        currentInput.value = 0;
+        equation.value=" ";
     }
     else if (buttonText == "=" || buttonText == "Enter") {
-        calculateDisplay.value = eval(output)
-        console.log(calculateDisplay.value)
-        console.log(output)
-        console.log(calculateDisplay.innerText)
+        equation.value+=currentInput.value +" = ";
+        currentInput.value = eval(currentInput.value)
+        equations.push(equation.value)
+        answers.push(currentInput.value)
+        showHistory()
     }
-    else {
-        if (type === "keypress") {
-            output += buttonText            
-            console.log(output)
-            console.log(calculateDisplay.innerHTML)
-        }
-        else {
-            output += buttonText
-            calculateDisplay.value = output
-            console.log(calculateDisplay.innerText)
-        }
+    else if(currentInput.value==0){
+        currentInput.value=buttonText
     }
-    console.log(calculateDisplay.value)
-    console.log(calculateDisplay.innerText)
-}
-// buttonsDiv.addEventListener('click',function(e){
-//     console.log(e.target.innerText)
-//     var buttonText=e.target.innerText
-//     if(buttonText=='x'){
-//         buttonText="*"
-//         output+=buttonText
-//         calculateDisplay.value=output;
-//     }
-//     else if(buttonText=="C"||buttonText=="CE"){
-//         output="";
-//         calculateDisplay.value=output;
-//     }
-//     else if(buttonText == "="){
-//         calculateDisplay.value=eval(output)
-//     }
-//     else{
-//         output+=buttonText
-//         calculateDisplay.value=output
-//     }
+    else{
+        currentInput.value+=buttonText;
+    }
+       
+    }
 
-// })
-
-// buttonsDiv.addEventListener('keypress',function(e){
-//     console.log(e.key)
-//     var buttonText=e.key
-//     if(buttonText=='x'){
-//         buttonText="*"
-//         output+=buttonText
-//         calculateDisplay.value=output;
-//     }
-//     else if(buttonText=="C"||buttonText=="CE"){
-//         output="";
-//         calculateDisplay.value=output;
-//     }
-//     else if(buttonText == "="){
-//         calculateDisplay.value=eval(output)
-//     }
-//     else{
-//         output+=buttonText
-//         // calculateDisplay.value=output
-//     }
-
-// })
-
+    var lastanswer=document.getElementById('lastAns')
+    function showHistory(){
+        document.getElementById('historyContainer').style.display = "block";
+        for(i=0;i<equations.length;i++){
+     
+            var lastHistory=`
+            <div class='historyBox mb-2 bg-dark'>
+            <span>${equations[i]}</span><br><span>${answers[i]}</span>
+            </div>        
+            `
+        }
+        lastanswer.innerHTML+=lastHistory
+    }
