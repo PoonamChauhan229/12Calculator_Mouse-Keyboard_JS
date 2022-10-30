@@ -1,7 +1,7 @@
 var currentInput=document.getElementById('input')
 var equation=document.getElementById('equation')
-var equations=[];
-var answers=[];
+var equationsarray=[];
+var answersarray=[];
 
 let buttonsDiv = document.getElementById('buttonsDiv')
 
@@ -45,10 +45,18 @@ function ans(buttonText) {
         equation.value=" ";
     }
     else if (buttonText == "=" || buttonText == "Enter") {
-        equation.value=currentInput.value +" = ";
-        currentInput.value = eval(currentInput.value)
-        equations.push(equation.value)
-        answers.push(currentInput.value)
+        var value = currentInput.value;
+        // below line pushing to the equation input box
+        equation.value=value +" = ";
+        var answer = eval(value);
+        currentInput.value = answer;
+        // equationarray stores the equation value
+        equationsarray.push(equation.value)
+        console.log(equationsarray)
+        //answersarray stores the currentInput value(answer)
+        answersarray.push(currentInput.value)
+        console.log(answersarray)
+        // call show History
         showHistory()
     }
     else if(currentInput.value==0){
@@ -63,11 +71,11 @@ function ans(buttonText) {
     var lastanswer=document.getElementById('lastAns')
     function showHistory(){
         document.getElementById('historyContainer').style.display = "block";
-        for(i=0;i<equations.length;i++){
+        for(i=0;i<equationsarray.length;i++){
      
             var lastHistory=`
             <div class='historyBox mb-2 bg-dark'>
-            <span>${equations[i]}</span><br><span>${answers[i]}</span>
+            <span>${equationsarray[i]}</span><br><span>${answersarray[i]}</span>
             </div>        
             `
         }
